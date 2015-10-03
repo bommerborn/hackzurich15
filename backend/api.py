@@ -106,9 +106,9 @@ def disp_push():
 
     return jsonify(status="ok")
 
-@app.route('/get_info', methods=['POST'])
+@app.route('/get_info', methods=['GET'])
 def get_info():
-    result = auth_user_token(request.form.get('token'))
+    result = auth_user_token(request.args.get('token'))
 
     if not result:
         return jsonify(status="err", error="invalid_login"), 401
@@ -133,13 +133,19 @@ def get_info():
     transactionListParams.institutionPassword = INST_PW
     transactionListParams.entityID = externalAccountNo
     transactionListParams.runOption = 'A'
+    transactionListParams.sortKeyName = 'TRANSACTION_DATE'
+    transactionListParams.sortKeyDir = 'D'
+    transactionListParams.pageSize = 10
+    transactionListParams.pageNumber = 1
 
     result = api_client.service.getTransactionList(transactionListParams)
     print str(result)
     if result.returnMessageOutput.responseMessageType != "I":
+        print "4"
         return jsonify(status="err", error="transactions"), 400
 
     if len(result.transactionSetList.transactionSet) < 1:
+        print "5"
         return jsonify(status="err", error="no_transactions"), 404
 
     last_transaction_date = result.transactionSetList.transactionSet[0].transactionDate
@@ -149,4 +155,4 @@ def get_info():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
