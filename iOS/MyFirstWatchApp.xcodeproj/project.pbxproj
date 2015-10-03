@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		39A6AA2C1BC058BF00B0C48C /* Alamofire.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 39A6AA2A1BC058BF00B0C48C /* Alamofire.framework.dSYM */; settings = {ASSET_TAGS = (); }; };
 		39EE741E1BBF569800414F0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EE741D1BBF569800414F0E /* AppDelegate.swift */; };
 		39EE74201BBF569800414F0E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EE741F1BBF569800414F0E /* ViewController.swift */; };
 		39EE74231BBF569800414F0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39EE74211BBF569800414F0E /* Main.storyboard */; };
@@ -102,6 +103,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		39A6AA291BC058BF00B0C48C /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		39A6AA2A1BC058BF00B0C48C /* Alamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Alamofire.framework.dSYM; path = Carthage/Build/iOS/Alamofire.framework.dSYM; sourceTree = "<group>"; };
 		39EE741A1BBF569800414F0E /* MyFirstWatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFirstWatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39EE741D1BBF569800414F0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39EE741F1BBF569800414F0E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -197,6 +200,8 @@
 		39EE74111BBF569800414F0E = {
 			isa = PBXGroup;
 			children = (
+				39A6AA291BC058BF00B0C48C /* Alamofire.framework */,
+				39A6AA2A1BC058BF00B0C48C /* Alamofire.framework.dSYM */,
 				39EE741C1BBF569800414F0E /* MyFirstWatchApp */,
 				39EE74311BBF569900414F0E /* MyFirstWatchAppTests */,
 				39EE743C1BBF569900414F0E /* MyFirstWatchAppUITests */,
@@ -416,6 +421,7 @@
 				39EE74741BBF684E00414F0E /* Sources */,
 				39EE74751BBF684E00414F0E /* Frameworks */,
 				39EE74761BBF684E00414F0E /* Resources */,
+				39A6AA2D1BC058EC00B0C48C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -595,6 +601,7 @@
 				39EE74851BBF684E00414F0E /* LaunchScreen.storyboard in Resources */,
 				39EE74821BBF684E00414F0E /* Assets.xcassets in Resources */,
 				39EE74801BBF684E00414F0E /* Main.storyboard in Resources */,
+				39A6AA2C1BC058BF00B0C48C /* Alamofire.framework.dSYM in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -613,6 +620,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		39A6AA2D1BC058EC00B0C48C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		39EE74161BBF569800414F0E /* Sources */ = {
@@ -840,7 +864,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = "MyFirstWatchApp WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = bommerborn.MyFirstWatchApp.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.hackzurich.teampositive-watchext";
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -854,7 +878,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = "MyFirstWatchApp WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = bommerborn.MyFirstWatchApp.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.hackzurich.teampositive-watchext";
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -870,7 +894,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = MyFirstWatchApp_WatchKit_Extension;
 				INFOPLIST_FILE = "MyFirstWatchApp WatchKit App/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = bommerborn.MyFirstWatchApp.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.hackzurich.teampositive-watchapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -886,7 +910,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = MyFirstWatchApp_WatchKit_Extension;
 				INFOPLIST_FILE = "MyFirstWatchApp WatchKit App/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = bommerborn.MyFirstWatchApp.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.hackzurich.teampositive-watchapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -979,6 +1003,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Notification/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.hackzurich.teampositive;
@@ -993,6 +1021,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Notification/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.hackzurich.teampositive;
@@ -1068,6 +1100,7 @@
 				39EE74651BBF569900414F0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		39EE74671BBF569900414F0E /* Build configuration list for PBXNativeTarget "MyFirstWatchApp WatchKit App" */ = {
 			isa = XCConfigurationList;
@@ -1076,6 +1109,7 @@
 				39EE74691BBF569900414F0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		39EE746B1BBF569900414F0E /* Build configuration list for PBXNativeTarget "MyFirstWatchApp" */ = {
 			isa = XCConfigurationList;
@@ -1084,6 +1118,7 @@
 				39EE746D1BBF569900414F0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		39EE746E1BBF569900414F0E /* Build configuration list for PBXNativeTarget "MyFirstWatchAppTests" */ = {
 			isa = XCConfigurationList;
@@ -1092,6 +1127,7 @@
 				39EE74701BBF569900414F0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		39EE74711BBF569900414F0E /* Build configuration list for PBXNativeTarget "MyFirstWatchAppUITests" */ = {
 			isa = XCConfigurationList;
@@ -1100,6 +1136,7 @@
 				39EE74731BBF569900414F0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		39EE749D1BBF684E00414F0E /* Build configuration list for PBXNativeTarget "Notification" */ = {
 			isa = XCConfigurationList;
@@ -1108,6 +1145,7 @@
 				39EE749F1BBF684E00414F0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		39EE74A01BBF684E00414F0E /* Build configuration list for PBXNativeTarget "NotificationTests" */ = {
 			isa = XCConfigurationList;
@@ -1116,6 +1154,7 @@
 				39EE74A21BBF684E00414F0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		39EE74A31BBF684E00414F0E /* Build configuration list for PBXNativeTarget "NotificationUITests" */ = {
 			isa = XCConfigurationList;
@@ -1124,6 +1163,7 @@
 				39EE74A51BBF684E00414F0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
