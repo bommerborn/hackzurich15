@@ -67,6 +67,7 @@ def link_card():
         return jsonify(status="err", error="no_loyality_acc"), 401
 
     externalAccountNo = result.loyaltyAccountSet.customerLogin_loyaltyAccountSet[0].externalAccountNo
+    internalAccountNo = result.loyaltyAccountSet.customerLogin_loyaltyAccountSet[0].internalAccountNo
     print "Using AccountID " + str(externalAccountNo)
 
     result = account_details(externalAccountNo)
@@ -75,24 +76,27 @@ def link_card():
 
     print str(result)
 
-    pushParams = api_client.factory.create('ns30:setUserDevicesParameters')
-    pushParams.institutionID = INST_ID
-    pushParams.institutionPassword = INST_PW
-    pushParams.deviceName = "iOS_Device"
-    pushParams.status = "A"
-    pushParams.userProfile = "APP"
-    pushParams.runOption = "A"
-    pushParams.entityType = "CUS"
-    pushParams.deviceToken = push_token
-    pushParams.entity = externalAccountNo
+    for ident in [externalAccountNo, internalAccountNo]:
+        pushParams = api_client.factory.create('ns30:setUserDevicesParameters')
+        pushParams.institutionID = INST_ID
+        pushParams.institutionPassword = INST_PW
+        pushParams.deviceName = "iOS_Device"
+        pushParams.status = "A"
+        pushParams.userProfile = "APP"
+        pushParams.runOption = "A"
+        pushParams.entityType = "CUS"
+        pushParams.deviceToken = push_token
+        pushParams.entity = ident
 
-    result = api_client.service.setUserDevices(pushParams)
+        print str(pushParams)
 
-    print str(result)
+        result = api_client.service.setUserDevices(pushParams)
 
-    if result.returnMessageOutput.responseMessageType != "I":
-        if result.returnMessageOutput.responseCode != "21902":
-            return jsonify(status="err", error="push_token_reg"), 400
+        print str(result)
+
+        if result.returnMessageOutput.responseMessageType != "I":
+            if result.returnMessageOutput.responseCode != "21902":
+                return jsonify(status="err", error="push_token_reg"), 400
 
     return jsonify(status="ok", token=base64.b64encode(username + ":" + password))
 
@@ -102,9 +106,9 @@ def disp_push():
 
     return jsonify(status="ok")
 
-@app.route('/get_info', methods=['POST'])
+@app.route('/get_info', methods=['GET'])
 def get_info():
-    result = auth_user_token(request.form.get('token'))
+    result = auth_user_token(request.args.get('token'))
 
     if not result:
         return jsonify(status="err", error="invalid_login"), 401
@@ -129,13 +133,19 @@ def get_info():
     transactionListParams.institutionPassword = INST_PW
     transactionListParams.entityID = externalAccountNo
     transactionListParams.runOption = 'A'
+    transactionListParams.sortKeyName = 'TRANSACTION_DATE'
+    transactionListParams.sortKeyDir = 'D'
+    transactionListParams.pageSize = 10
+    transactionListParams.pageNumber = 1
 
     result = api_client.service.getTransactionList(transactionListParams)
     print str(result)
     if result.returnMessageOutput.responseMessageType != "I":
+        print "4"
         return jsonify(status="err", error="transactions"), 400
 
     if len(result.transactionSetList.transactionSet) < 1:
+        print "5"
         return jsonify(status="err", error="no_transactions"), 404
 
     last_transaction_date = result.transactionSetList.transactionSet[0].transactionDate
@@ -145,4 +155,4 @@ def get_info():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')

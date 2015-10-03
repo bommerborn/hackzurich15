@@ -29,6 +29,11 @@ transactionListParams.institutionID = 7010
 transactionListParams.institutionPassword = '7010VALORA'
 transactionListParams.entityID = '5267504000117697'
 transactionListParams.runOption = 'R'
+transactionListParams.sortKeyName = 'TRANSACTION_DATE'
+transactionListParams.sortKeyDir = 'D'
+transactionListParams.pageSize = 10
+transactionListParams.pageNumber = 1
+
 
 result = client.service.getTransactionList(transactionListParams)
 print result
