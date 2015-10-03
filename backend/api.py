@@ -1,17 +1,18 @@
+import base64
+import logging
+
+from suds.client import Client
+
 from flask import Flask
 from flask import request
 from flask import jsonify
-import base64
 
 INST_ID = 7010
 INST_PW = '7010VALORA'
 
 app = Flask(__name__)
 
-import logging
 logging.basicConfig(level=logging.INFO)
-
-from suds.client import Client
 api_client = Client('http://merit.axiomwebservices.com/MeritEChannelsAccessZurich/service.svc?singleWsdl')
 
 def auth_user_token(token):
