@@ -67,6 +67,7 @@ def link_card():
         return jsonify(status="err", error="no_loyality_acc"), 401
 
     externalAccountNo = result.loyaltyAccountSet.customerLogin_loyaltyAccountSet[0].externalAccountNo
+    internalAccountNo = result.loyaltyAccountSet.customerLogin_loyaltyAccountSet[0].internalAccountNo
     print "Using AccountID " + str(externalAccountNo)
 
     result = account_details(externalAccountNo)
@@ -75,24 +76,25 @@ def link_card():
 
     print str(result)
 
-    pushParams = api_client.factory.create('ns30:setUserDevicesParameters')
-    pushParams.institutionID = INST_ID
-    pushParams.institutionPassword = INST_PW
-    pushParams.deviceName = "iOS_Device"
-    pushParams.status = "A"
-    pushParams.userProfile = "APP"
-    pushParams.runOption = "A"
-    pushParams.entityType = "CUS"
-    pushParams.deviceToken = push_token
-    pushParams.entity = externalAccountNo
+    for ident in [externalAccountNo, internalAccountNo]:
+        pushParams = api_client.factory.create('ns30:setUserDevicesParameters')
+        pushParams.institutionID = INST_ID
+        pushParams.institutionPassword = INST_PW
+        pushParams.deviceName = "iOS_Device"
+        pushParams.status = "A"
+        pushParams.userProfile = "APP"
+        pushParams.runOption = "A"
+        pushParams.entityType = "CUS"
+        pushParams.deviceToken = push_token
+        pushParams.entity = ident
 
-    result = api_client.service.setUserDevices(pushParams)
+        result = api_client.service.setUserDevices(pushParams)
 
-    print str(result)
+        print str(result)
 
-    if result.returnMessageOutput.responseMessageType != "I":
-        if result.returnMessageOutput.responseCode != "21902":
-            return jsonify(status="err", error="push_token_reg"), 400
+        if result.returnMessageOutput.responseMessageType != "I":
+            if result.returnMessageOutput.responseCode != "21902":
+                return jsonify(status="err", error="push_token_reg"), 400
 
     return jsonify(status="ok", token=base64.b64encode(username + ":" + password))
 
