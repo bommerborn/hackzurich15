@@ -88,6 +88,8 @@ def link_card():
         pushParams.deviceToken = push_token
         pushParams.entity = ident
 
+        print str(pushParams)
+
         result = api_client.service.setUserDevices(pushParams)
 
         print str(result)
