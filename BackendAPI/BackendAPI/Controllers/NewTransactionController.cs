@@ -11,24 +11,51 @@ namespace BackendAPI.Controllers
 {
     public class NewTransactionController : ApiController
     {
-		private const float creditFraction = 0.1f;
-
-		public IHttpActionResult GetNewTransaction(int userid, int transactionAmountCents)
+		public IHttpActionResult GetNewTransaction(int userid, int newCardBalanceInCents)
 		{
 			User u = DatabaseConnector.Instance.GetUserData(userid);
 
 			if(u == null)
 			{
-				u = new User(userid, 0);
+				u = new User(userid);
 			}
 
-			DatabaseConnector.Instance.PutTransactionData(userid, transactionAmountCents);
+			int transactionAmountCents = newCardBalanceInCents - u.lastCardExpenses;
 
-			u.AddCredit((int)(transactionAmountCents * creditFraction));
+			u.lastCardExpenses = newCardBalanceInCents;
+
+			float cashbackFraction = CalculateCashbackFraction(u.level);
+
+			int cashbackAmount = (int)(transactionAmountCents * cashbackFraction);
+
+			u.AddCredit(cashbackAmount);
+
+			DatabaseConnector.Instance.PutTransactionData(userid, transactionAmountCents, cashbackAmount);
 
 			DatabaseConnector.Instance.PutUserData(u);
 
 			return Ok();
+		}
+
+		private float CalculateCashbackFraction(int level)
+		{
+			switch (level)
+			{
+				case 1:
+					return .03f;
+				case 2:
+					return .05f;
+				case 3:
+					return .08f;
+				case 4:
+					return .1f;
+				case 5:
+					return .13f;
+				case 6:
+					return .16f;
+				default:
+					return .2f;
+			}
 		}
     }
 }
