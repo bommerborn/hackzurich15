@@ -9,6 +9,7 @@ from flask import jsonify
 
 INST_ID = 7010
 INST_PW = '7010VALORA'
+UrlApi='http://hackzurich15.azurewebsites.net/api/';
 
 app = Flask(__name__)
 
@@ -103,6 +104,35 @@ def link_card():
 @app.route('/dispatch_push', methods=['POST'])
 def disp_push():
     result = auth_user_token(request.form.get('token'))
+    
+    externalAccountNo = result.loyaltyAccountSet.customerLogin_loyaltyAccountSet[0].externalAccountNo
+    result = account_details(externalAccountNo)
+    
+    UserID=result.loyaltyAccountSetList.loyaltyAccountSet[0].accountID;
+    UserAccountBalance= result.loyaltyAccountSetList.loyaltyAccountSet[0].accountBalance
+    
+    #UserID=result.accountRelationshipSetList.accountRelationshipSet[0].externalAccountNo
+
+    #print UserID
+    #print result.accountRelationshipSetList.accountRelationshipSet[0].externalAccountNo
+    #print result
+    #UserID=1337
+
+    #############################################
+    #############################################
+
+
+##    print 'POS_Balance = '+ str(UserAccountBalance);
+##    UserAccountBalanceInCents=int(float(UserAccountBalance)*100);
+##    print 'POS_Balance in cents = '+ str(UserAccountBalanceInCents);
+
+    
+    UrlNewTransaction= UrlApi + 'NewTransaction?userid='+str(UserID)+'&newCardBalanceInCents='+ str(UserAccountBalanceInCents)
+    requests.get(UrlNewTransaction)
+
+
+    #############################################
+    #############################################
 
     return jsonify(status="ok")
 
@@ -151,8 +181,13 @@ def get_info():
     last_transaction_date = result.transactionSetList.transactionSet[0].transactionDate
     last_transaction_category = result.transactionSetList.transactionSet[0].transactionCategoryDescription
 
-    return jsonify(status="ok", balance=52.57, email=email, last_transaction_date=last_transaction_date, last_transaction_category=last_transaction_category)
+    UserID=result.loyaltyAccountSetList.loyaltyAccountSet[0].accountID;
+    UrlShowCashBackshBack=UrlApi + 'LastCashbackAmountOfUser?uid=' + str(UserID);
+    LastCashBackAmount=requests.get(UrlShowCashBack);
+    LastCashBackAmountValue=LastCashBackAmount.content;
+    
 
+    return jsonify(status="ok", balance=LastCashBackAmountValue, email=email, last_transaction_date=last_transaction_date, last_transaction_category=last_transaction_category)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
