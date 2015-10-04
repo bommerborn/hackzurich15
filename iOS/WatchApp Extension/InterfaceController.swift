@@ -1,6 +1,6 @@
 //
 //  InterfaceController.swift
-//  MyFirstWatchApp WatchKit Extension
+//  WatchApp Extension
 //
 //  Created by Benno Ommerborn on 03.10.15.
 //  Copyright © 2015 bommerborn. All rights reserved.

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="8092"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="WatchApp" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="164" y="217"/>
+        </scene>
+        <!--Glance Interface Controller-->
+        <scene sceneID="8Ih-mb-9eM">
+            <objects>
+                <glanceController hidesWhenLoading="NO" bottomTemplateType="groupLargeBody2Footer" id="cIu-Y3-CUa" customClass="GlanceController" customModule="WatchApp_Extension">
+                    <items>
+                        <group alignment="left" id="nvc-UE-Dkz">
+                            <items>
+                                <imageView width="1" height="1" alignment="left" id="DIx-eI-EjB"/>
+                            </items>
+                        </group>
+                        <group alignment="left" id="YsP-1Y-7bx">
+                            <items>
+                                <imageView width="1" height="1" alignment="left" id="0Be-zg-na4"/>
+                            </items>
+                        </group>
+                        <label alignment="left" text="00,00€" minimumScaleFactor="0.40000000000000002" id="ET9-Nv-Udg">
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </label>
+                        <label alignment="left" text="your current CashBack" id="L0C-CQ-Kuy"/>
+                        <label alignment="left" id="aZf-Cr-isR"/>
+                    </items>
+                    <connections>
+                        <outlet property="mainLabel" destination="ET9-Nv-Udg" id="GPh-kh-afc"/>
+                    </connections>
+                </glanceController>
+            </objects>
+            <point key="canvasLocation" x="172" y="500"/>
+        </scene>
+    </scenes>
+</document>

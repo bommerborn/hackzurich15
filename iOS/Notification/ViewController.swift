@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class ViewController: UIViewController {
 
@@ -17,6 +18,28 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let auth_token = NSUserDefaults.standardUserDefaults().objectForKey("auth_token") as? NSString,
+        let url = NSUserDefaults.standardUserDefaults().objectForKey("api_endpoint") as? NSString {
+            Alamofire.request(.GET, (url as String) + "/get_info", parameters: ["token" : auth_token])
+                .responseJSON { request, response, result in
+                    print(response)
+                    print(result)   // result of response serialization
+                    
+                    if let JSON = result.value {
+                        print("JSON: \(JSON)")
+                        let balance = JSON["balance"]
+                    }
+            }
+        }
+        else {
+            print("No auth toklen avaiavle")
+        }
+
     }
 
     override func didReceiveMemoryWarning() {
