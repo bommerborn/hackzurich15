@@ -24,7 +24,7 @@ class GlanceController: WKInterfaceController {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         
-        Alamofire.request(.GET, "http://172.27.3.49:5000/get_info", parameters: ["token" : "TEVPTi5CRVJOQVJEQEFYSU9NQy5DT006YXhpb20="])
+        Alamofire.request(.GET, "http://jlz4.julez.in:5000/get_info", parameters: ["token" : "TEVPTi5CRVJOQVJEQEFYSU9NQy5DT006YXhpb20="])
             .responseJSON { request, response, result in
                 print(response)
                 print(result)   // result of response serialization

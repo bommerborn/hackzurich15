@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         NSUserDefaults.standardUserDefaults().setObject(NSString(UTF8String: "LEON.BERNARD@AXIOMC.COM"), forKey: "username")
         NSUserDefaults.standardUserDefaults().setObject(NSString(UTF8String: "axiom"), forKey: "password")
-        NSUserDefaults.standardUserDefaults().setObject(NSString(UTF8String: "http://172.27.3.49:5000"), forKey: "api_endpoint")
+        NSUserDefaults.standardUserDefaults().setObject(NSString(UTF8String: "http://jlz4.julez.in:5000"), forKey: "api_endpoint")
         NSUserDefaults.standardUserDefaults().synchronize()
         
         if let token = NSUserDefaults.standardUserDefaults().objectForKey("auth_token") as? NSString {
