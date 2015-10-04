@@ -151,7 +151,7 @@ def get_info():
     last_transaction_date = result.transactionSetList.transactionSet[0].transactionDate
     last_transaction_category = result.transactionSetList.transactionSet[0].transactionCategoryDescription
 
-    return jsonify(status="ok", balance=-1, email=email, last_transaction_date=last_transaction_date, last_transaction_category=last_transaction_category)
+    return jsonify(status="ok", balance=52.57, email=email, last_transaction_date=last_transaction_date, last_transaction_category=last_transaction_category)
 
 
 if __name__ == '__main__':
