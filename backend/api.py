@@ -1,5 +1,7 @@
 import base64
 import logging
+import requests
+import json
 
 from suds.client import Client
 
@@ -108,31 +110,33 @@ def disp_push():
     externalAccountNo = result.loyaltyAccountSet.customerLogin_loyaltyAccountSet[0].externalAccountNo
     result = account_details(externalAccountNo)
     
-    UserID=result.loyaltyAccountSetList.loyaltyAccountSet[0].accountID;
-    UserAccountBalance= result.loyaltyAccountSetList.loyaltyAccountSet[0].accountBalance
-    
-    #UserID=result.accountRelationshipSetList.accountRelationshipSet[0].externalAccountNo
+    UserID = result.loyaltyAccountSetList.loyaltyAccountSet[0].accountID;
 
-    #print UserID
-    #print result.accountRelationshipSetList.accountRelationshipSet[0].externalAccountNo
-    #print result
-    #UserID=1337
+    transactionListParams = api_client.factory.create('ns30:transactionListParameters')
+    transactionListParams.scheme = 1
+    transactionListParams.institutionID = INST_ID
+    transactionListParams.institutionPassword = INST_PW
+    transactionListParams.entityID = UserID
+    transactionListParams.runOption = 'A'
+    transactionListParams.sortKeyName = 'TRANSACTION_DATE'
+    transactionListParams.sortKeyDir = 'D'
+    transactionListParams.pageSize = 10
+    transactionListParams.pageNumber = 1
 
-    #############################################
-    #############################################
+    result = api_client.service.getTransactionList(transactionListParams)
+    print str(result)
 
+    if result.returnMessageOutput.responseMessageType != "I":
+        return jsonify(status="err", error="transactions"), 400
 
-##    print 'POS_Balance = '+ str(UserAccountBalance);
-##    UserAccountBalanceInCents=int(float(UserAccountBalance)*100);
-##    print 'POS_Balance in cents = '+ str(UserAccountBalanceInCents);
+    if len(result.transactionSetList.transactionSet) < 1:
+        return jsonify(status="err", error="no_transactions"), 400
 
-    
-    UrlNewTransaction= UrlApi + 'NewTransaction?userid='+str(UserID)+'&newCardBalanceInCents='+ str(UserAccountBalanceInCents)
+    transactionAmount = int(float(result.transactionSetList.transactionSet[0].originalAmount) * 100)
+
+    print "Transaction amount: " + str(transactionAmount)
+    UrlNewTransaction = UrlApi + 'NewTransaction?userid='+str(UserID)+'&transactionAmountCents='+ str(transactionAmount)
     requests.get(UrlNewTransaction)
-
-
-    #############################################
-    #############################################
 
     return jsonify(status="ok")
 
@@ -157,6 +161,21 @@ def get_info():
 
     email = result.loyaltyAccountSetList.loyaltyAccountSet[0].accountHolderEmail
 
+    UserID=result.loyaltyAccountSetList.loyaltyAccountSet[0].accountID
+    UrlShowCashBack=UrlApi + 'LastCashbackAmountOfUser?uid=' + str(UserID)
+    LastCashBackAmount=requests.get(UrlShowCashBack)
+    LastCashBackAmountValue=LastCashBackAmount.content
+
+    user_info_url = UrlApi + 'User/' + str(UserID)
+    user_info = requests.get(user_info_url)
+    print "user info: " + str(user_info.content)
+
+    try:
+        user_info_parsed = json.loads(user_info.content)
+        balance_eur = float(user_info_parsed['credit']) / 100.0
+    except Exception:
+        pass
+
     transactionListParams = api_client.factory.create('ns30:transactionListParameters')
     transactionListParams.scheme = 1
     transactionListParams.institutionID = INST_ID
@@ -171,23 +190,17 @@ def get_info():
     result = api_client.service.getTransactionList(transactionListParams)
     print str(result)
     if result.returnMessageOutput.responseMessageType != "I":
-        print "4"
         return jsonify(status="err", error="transactions"), 400
 
     if len(result.transactionSetList.transactionSet) < 1:
-        print "5"
         return jsonify(status="err", error="no_transactions"), 404
 
     last_transaction_date = result.transactionSetList.transactionSet[0].transactionDate
     last_transaction_category = result.transactionSetList.transactionSet[0].transactionCategoryDescription
 
-    UserID=result.loyaltyAccountSetList.loyaltyAccountSet[0].accountID;
-    UrlShowCashBackshBack=UrlApi + 'LastCashbackAmountOfUser?uid=' + str(UserID);
-    LastCashBackAmount=requests.get(UrlShowCashBack);
-    LastCashBackAmountValue=LastCashBackAmount.content;
-    
-
-    return jsonify(status="ok", balance=LastCashBackAmountValue, email=email, last_transaction_date=last_transaction_date, last_transaction_category=last_transaction_category)
+    print "Balance: " + str(balance_eur)
+    ret = jsonify(status="ok", balance=balance_eur, email=email, last_transaction_date=last_transaction_date, last_transaction_category=last_transaction_category)
+    return ret
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
